@@ -1,0 +1,12 @@
+stages:
+  - build
+
+docker-build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+    - docker build -t $DOCKER_USER/weather-cli .
+    - docker push $DOCKER_USER/weather-cli
